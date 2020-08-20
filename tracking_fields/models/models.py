@@ -8,42 +8,42 @@ class tracking_field_overwriter(models.Model):
     _inherit = 'res.partner'
 
     # Base Name
-    name = fields.Char(tracking_visibility=1)
-    var = fields.Char(tracking_visibility=1)
-    phone = fields.Char(tracking_visibility=1)
-    mobile = fields.Char(tracking_visibility=1)
-    email = fields.Char(tracking_visibility=1)
-    website = fields.Char(tracking_visibility=1)
+    name = fields.Char(tracking=1)
+    var = fields.Char(tracking=1)
+    phone = fields.Char(tracking=1)
+    mobile = fields.Char(tracking=1)
+    email = fields.Char(tracking=1)
+    website = fields.Char(tracking=1)
 
     # Base Address
-    street = fields.Char(tracking_visibility=1)
-    street2 = fields.Char(tracking_visibility=1)
-    city = fields.Char(tracking_visibility=1)
-    state_id = fields.Many2one(tracking_visibility=1)
-    zip = fields.Char(tracking_visibility=1)
-    country_id = fields.Many2one(tracking_visibility=1)
+    street = fields.Char(tracking=1)
+    street2 = fields.Char(tracking=1)
+    city = fields.Char(tracking=1)
+    state_id = fields.Many2one(tracking=1)
+    zip = fields.Char(tracking=1)
+    country_id = fields.Many2one(tracking=1)
 
     # Sales and purchase
-    user_id = fields.Many2one(tracking_visibility=1)
-    property_payment_term_id = fields.Many2one(tracking_visibility=1)
-    property_supplier_payment_term_id = fields.Many2one(tracking_visibility=1)
-    default_supplierinfo_discount = fields.Float(tracking_visibility=1)
-    barcode = fields.Char(tracking_visibility=1)
-    property_account_position_id = fields.Char(tracking_visibility=1)
-    ref = fields.Char(tracking_visibility=1)
-    company_id = fields.Many2one(tracking_visibility=1)
-    website_id = fields.Many2one(tracking_visibility=1)
-    industry_id = fields.Many2one(tracking_visibility=1)
-    property_stock_customer = fields.Many2one(tracking_visibility=1)
-    property_stock_supplier = fields.Many2one(tracking_visibility=1)
+    user_id = fields.Many2one(tracking=1)
+    property_payment_term_id = fields.Many2one(tracking=1)
+    property_supplier_payment_term_id = fields.Many2one(tracking=1)
+    default_supplierinfo_discount = fields.Float(tracking=1)
+    barcode = fields.Char(tracking=1)
+    property_account_position_id = fields.Char(tracking=1)
+    ref = fields.Char(tracking=1)
+    company_id = fields.Many2one(tracking=1)
+    website_id = fields.Many2one(tracking=1)
+    industry_id = fields.Many2one(tracking=1)
+    property_stock_customer = fields.Many2one(tracking=1)
+    property_stock_supplier = fields.Many2one(tracking=1)
 
     # Accounting
-    bank_ids = fields.One2many(tracking_visibility=1)
-    property_account_receivable_id = fields.Many2one(tracking_visibility=1)
-    property_account_payable_id = fields.Many2one(tracking_visibility=1)
+    bank_ids = fields.One2many(tracking=1)
+    property_account_receivable_id = fields.Many2one(tracking=1)
+    property_account_payable_id = fields.Many2one(tracking=1)
 
     # Internal notes
-    comment = fields.Text(tracking_visibility=1)
+    comment = fields.Text(tracking=1)
 
     # 2Many fields 
     def write(self, vals):
