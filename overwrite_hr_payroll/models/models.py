@@ -1,4 +1,7 @@
 from odoo import models, fields, api
+from odoo.tools import date_utils
+from datetime import date, datetime, time
+from collections import defaultdict
 
 
 class overwrite_payroll_contract(models.Model):
@@ -85,3 +88,51 @@ class overwrite_payroll_employee(models.Model):
 #informacion judicial
     libreta_militar = fields.Boolean(string='¿tiene libreta militar?')
     certificado_judicial = fields.Boolean()
+
+
+class overwrite_payroll_payslip(models.Model):
+    _inherit = 'hr.payslip'
+    
+    def _get_worked_day_lines(self):
+        """
+        :returns: a list of dict containing the worked days values that should be applied for the given payslip
+        """
+        res = []
+        # fill only if the contract as a working schedule linked
+        self.ensure_one()
+        contract = self.contract_id
+        if contract.resource_calendar_id:
+            paid_amount = self._get_contract_wage()
+            unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids.ids
+
+            work_hours = contract._get_work_hours(self.date_from, self.date_to)
+            total_hours = sum(work_hours.values()) or 1
+            total_days = 30.0
+            total_days_work = 30.0
+            work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
+            biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
+            add_days_rounding = 0
+            for work_entry_type_id, hours in work_hours_ordered:
+                work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)
+                is_paid = work_entry_type_id not in unpaid_work_entry_types
+                calendar = contract.resource_calendar_id
+                days = round(hours / calendar.hours_per_day, 0) if calendar.hours_per_day else 0
+                if work_entry_type_id == biggest_work:
+                    print("entre")
+                    if((self.date_to.day == 30 or self.date_to.day == 31 
+                    or ((self.date_to.day == 28 or self.date_to.day == 29) and self.date_to.month == 2))):
+                        days  = total_days_work
+                    days += add_days_rounding
+                else:
+                    total_days_work = total_days - days
+                day_rounded = self._round_days(work_entry_type, days)
+                add_days_rounding += (days - day_rounded)
+                attendance_line = {
+                    'sequence': work_entry_type.sequence,
+                    'work_entry_type_id': work_entry_type_id,
+                    'number_of_days': day_rounded,
+                    'number_of_hours': hours,
+                    'amount': day_rounded * paid_amount / total_days if is_paid else 0,
+                }
+                res.append(attendance_line)
+        return res
