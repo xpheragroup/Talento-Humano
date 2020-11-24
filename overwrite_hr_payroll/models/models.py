@@ -118,7 +118,6 @@ class overwrite_payroll_payslip(models.Model):
                 calendar = contract.resource_calendar_id
                 days = round(hours / calendar.hours_per_day, 0) if calendar.hours_per_day else 0
                 if work_entry_type_id == biggest_work:
-                    print("entre")
                     if((self.date_to.day == 30 or self.date_to.day == 31 
                     or ((self.date_to.day == 28 or self.date_to.day == 29) and self.date_to.month == 2))):
                         days  = total_days_work
