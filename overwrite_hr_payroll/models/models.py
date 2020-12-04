@@ -123,7 +123,7 @@ class overwrite_payroll_payslip(models.Model):
                         days  = total_days_work
                     days += add_days_rounding
                 else:
-                    total_days_work = total_days - days
+                    total_days_work = total_days_work - days
                 day_rounded = self._round_days(work_entry_type, days)
                 add_days_rounding += (days - day_rounded)
                 attendance_line = {
