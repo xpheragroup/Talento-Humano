@@ -19,22 +19,26 @@ class overwrite_payroll_contract(models.Model):
 
     eps = fields.Char(
         string='EPS',
-        help='Ingrese la EPS'
+        help='Ingrese la EPS',
+        required=True,
     )
 
     caja_compensacion = fields.Char(
         string='Caja de compensación',
-        help='Aquí se debe ingresar la caja de compensación'
+        help='Aquí se debe ingresar la caja de compensación',
+        required=True,
     )
 
     fondo_pension = fields.Char(
         string='Fondo de pensiones',
-        help='Aquí se debe ingresar la caja de compensación'
+        help='Aquí se debe ingresar la caja de compensación',
+        required=True,
     )
 
     aseguradora_riesgo = fields.Char(
         string='Nombre de aseguradora ARL',
-        help='Aquí se debe diligenciar el nombre de la aseguradora'
+        help='Aquí se debe diligenciar el nombre de la aseguradora',
+        required=True,
     )
 
     clase_riesgo = fields.Selection(
@@ -43,7 +47,8 @@ class overwrite_payroll_contract(models.Model):
                    ('2', 'Tipo II'),
                    ('3', 'Tipo III'),
                    ('4', 'Tipo IV'),
-                   ('5', 'Tipo V')]
+                   ('5', 'Tipo V')],
+        required=True,
     )
 
 
