@@ -131,7 +131,7 @@ class overwrite_payroll_payslip(models.Model):
                     'work_entry_type_id': work_entry_type_id,
                     'number_of_days': day_rounded,
                     'number_of_hours': hours,
-                    'amount': day_rounded * paid_amount / total_days if is_paid else -(day_rounded * paid_amount / total_days),
+                    'amount': day_rounded * paid_amount / total_days if is_paid else 0,
                 }
                 res.append(attendance_line)
         return res
