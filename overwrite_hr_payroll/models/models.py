@@ -1,6 +1,8 @@
 from odoo import models, fields, api
 from odoo.tools import date_utils
 from datetime import date, datetime, time
+from odoo.tools import float_compare, float_is_zero
+from odoo.exceptions import UserError, ValidationError
 from collections import defaultdict
 
 
@@ -97,7 +99,12 @@ class overwrite_payroll_employee(models.Model):
 
 class overwrite_payroll_payslip(models.Model):
     _inherit = 'hr.payslip'
-    
+    state = fields.Selection(selection_add=[('Descuento contable', 'Descuento contable')])
+    sepa_journal_id = fields.Many2one(
+        string='Bank Journal', comodel_name='account.journal', required=True,
+        default=lambda self: self.env['account.journal'].search([('type', '=', 'bank')], limit=1))
+    paid_move_id = fields.Many2one('account.move', 'asiento contable pago', readonly=True, copy=False)
+
     def _get_worked_day_lines(self):
         """
         :returns: a list of dict containing the worked days values that should be applied for the given payslip
@@ -140,8 +147,139 @@ class overwrite_payroll_payslip(models.Model):
                 }
                 res.append(attendance_line)
         return res
+    
+    def action_payslip_paid_account(self):
+        if any(slip.state == 'cancel' for slip in self):
+            raise ValidationError(_("You can't validate a cancelled payslip."))
+
+        precision = self.env['decimal.precision'].precision_get('Payroll')
+
+        payslips_to_post = self.filtered(lambda slip: not slip.payslip_run_id)
+
+        payslip_runs = (self - payslips_to_post).mapped('payslip_run_id')
+        for run in payslip_runs:
+            if run._are_payslips_ready():
+                payslips_to_post |= run.slip_ids
+
+        payslips_to_post = payslips_to_post.filtered(lambda slip: slip.state == 'paid' and slip.move_id)
+
+        journal_id_slip = self.sepa_journal_id
+
+        # Check that a journal exists on all the structures
+        if any(not payslip.struct_id for payslip in payslips_to_post):
+            raise ValidationError(_('One of the contract for these payslips has no structure type.'))
+        if any(not structure.journal_id for structure in payslips_to_post.mapped('struct_id')):
+            raise ValidationError(_('One of the payroll structures has no account journal defined on it.'))    
+        # Map all payslips by structure journal and pay slips month.
+        # {'journal_id': {'month': [slip_ids]}}
+        slip_mapped_data = {slip.struct_id.journal_id.id: {fields.Date().end_of(slip.date_to, 'month'): self.env['hr.payslip']} for slip in payslips_to_post}
+        for slip in payslips_to_post:
+            print("entre una vez")
+            slip_mapped_data[slip.struct_id.journal_id.id][fields.Date().end_of(slip.date_to, 'month')] |= slip
+        for journal_id in slip_mapped_data: # For each journal_id.
+            for slip_date in slip_mapped_data[journal_id]: # For each month.
+                line_ids = []
+                debit_sum = 0.0
+                credit_sum = 0.0
+                date = slip_date
+                move_dict = {
+                    'narration': '',
+                    'ref': date.strftime('%B %Y'),
+                    'journal_id': journal_id_slip.id,
+                    'date': date,
+                }
+
+                for slip in slip_mapped_data[journal_id][slip_date]:
+                    move_dict['narration'] += slip.number or '' + ' - ' + slip.employee_id.name or ''
+                    move_dict['narration'] += '\n'
+                    for line in slip.line_ids.filtered(lambda line: line.category_id):
+                        amount = -line.total if slip.credit_note else line.total
+                        if float_is_zero(amount, precision_digits=precision):
+                            continue
+                        if line.code == 'NET':
+                            print("Entre al devengado")
+                            debit_account_id = journal_id_slip.default_debit_account_id.id
+                            credit_account_id = line.salary_rule_id.account_credit.id
+
+                            if debit_account_id: # If the rule has a debit account.
+                                debit = amount if amount > 0.0 else 0.0
+                                credit = -amount if amount < 0.0 else 0.0
+
+                                existing_debit_lines = (
+                                    line_id for line_id in line_ids if
+                                    line_id['name'] == line.name
+                                    and line_id['account_id'] == debit_account_id
+                                    and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id)
+                                    and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0)))
+                                debit_line = next(existing_debit_lines, False)
+
+                                if not debit_line:
+                                    debit_line = {
+                                        'name': line.name,
+                                        'partner_id': line.partner_id.id,
+                                        'account_id': debit_account_id,
+                                        'journal_id': journal_id_slip.id,
+                                        'date': date,
+                                        'debit': debit,
+                                        'credit': credit,
+                                        'analytic_account_id': line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id,
+                                    }
+                                    line_ids.append(debit_line)
+                                else:
+                                    debit_line['debit'] += debit
+                                    debit_line['credit'] += credit
+                            
+                            if credit_account_id: # If the rule has a credit account.
+                                debit = -amount if amount < 0.0 else 0.0
+                                credit = amount if amount > 0.0 else 0.0
+                                existing_credit_line = (
+                                    line_id for line_id in line_ids if
+                                    line_id['name'] == line.name
+                                    and line_id['account_id'] == credit_account_id
+                                    and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id)
+                                    and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0))
+                                )
+                                credit_line = next(existing_credit_line, False)
+
+                                if not credit_line:
+                                    credit_line = {
+                                        'name': line.name,
+                                        'partner_id': line.partner_id.id,
+                                        'account_id': credit_account_id,
+                                        'journal_id': journal_id_slip.id,
+                                        'date': date,
+                                        'debit': debit,
+                                        'credit': credit,
+                                        'analytic_account_id': line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id,
+                                    }
+                                    line_ids.append(credit_line)
+                                else:
+                                    credit_line['debit'] += debit
+                                    credit_line['credit'] += credit
+
+                for line_id in line_ids: # Get the debit and credit sum.
+                    debit_sum += line_id['debit']
+                    credit_sum += line_id['credit']
+
+                # Add accounting lines in the move
+                move_dict['line_ids'] = [(0, 0, line_vals) for line_vals in line_ids]
+                move = self.env['account.move'].create(move_dict)
+                for slip in slip_mapped_data[journal_id][slip_date]:
+                    print("entre al for de los asientos")
+                    slip.write({'paid_move_id': move.id, 'date': date})
+                    self.filtered(lambda slip: slip.state == 'paid').write({'state': 'Descuento contable'})
+
 
 class overwrite_hr_payslip_employees(models.TransientModel):
     _inherit = 'hr.payslip.employees'
     employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
                                     default=None, required=True)
+
+class overwrite_hr_payslip_sepa_wizard(models.TransientModel):
+    _inherit = 'hr.payslip.sepa.wizard'
+
+    def generate_sepa_xml_file(self):
+        payslip_ids = self.env['hr.payslip'].browse(self.env.context['active_ids'])
+        payslip_ids.sepa_journal_id = self.journal_id
+        print(payslip_ids.sepa_journal_id.name)
+        payslip_ids._create_xml_file(self.journal_id)

@@ -52,4 +52,33 @@
             </xpath>
         </field>
     </record>
+
+    <record id="hr_payslip_button_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.button.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_print_payslip']" position="after">
+                <button string="Descuento contable" name="action_payslip_paid_account" type="object" attrs="{'invisible': [('state', 'not in', 'paid')]}" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='move_id']" position="after">
+                <field name="paid_move_id" readonly="1"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_hr_payroll_confirm_payroll">
+        <field name="name">Descuento contable</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action_payslip_paid_account()
+        </field>
+    </record>
 </odoo>
