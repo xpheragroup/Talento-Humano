@@ -154,17 +154,16 @@ class overwrite_payroll_payslip(models.Model):
 
         precision = self.env['decimal.precision'].precision_get('Payroll')
 
-        payslips_to_post = self.filtered(lambda slip: not slip.payslip_run_id)
+        # payslips_to_post = self.filtered(lambda slip: not slip.payslip_run_id)
 
-        payslip_runs = (self - payslips_to_post).mapped('payslip_run_id')
-        for run in payslip_runs:
-            if run._are_payslips_ready():
-                payslips_to_post |= run.slip_ids
+        # payslip_runs = (self - payslips_to_post).mapped('payslip_run_id')
+        # for run in payslip_runs:
+        #     if run._are_payslips_ready():
+        #         payslips_to_post |= run.slip_ids
 
-        payslips_to_post = payslips_to_post.filtered(lambda slip: slip.state == 'paid' and slip.move_id)
+        payslips_to_post = self.filtered(lambda slip: slip.state == 'paid' and slip.move_id)
 
         journal_id_slip = self.sepa_journal_id
-
         # Check that a journal exists on all the structures
         if any(not payslip.struct_id for payslip in payslips_to_post):
             raise ValidationError(_('One of the contract for these payslips has no structure type.'))
@@ -174,7 +173,6 @@ class overwrite_payroll_payslip(models.Model):
         # {'journal_id': {'month': [slip_ids]}}
         slip_mapped_data = {slip.struct_id.journal_id.id: {fields.Date().end_of(slip.date_to, 'month'): self.env['hr.payslip']} for slip in payslips_to_post}
         for slip in payslips_to_post:
-            print("entre una vez")
             slip_mapped_data[slip.struct_id.journal_id.id][fields.Date().end_of(slip.date_to, 'month')] |= slip
         for journal_id in slip_mapped_data: # For each journal_id.
             for slip_date in slip_mapped_data[journal_id]: # For each month.
@@ -198,8 +196,8 @@ class overwrite_payroll_payslip(models.Model):
                             continue
                         if line.code == 'NET':
                             print("Entre al devengado")
-                            debit_account_id = journal_id_slip.default_debit_account_id.id
-                            credit_account_id = line.salary_rule_id.account_credit.id
+                            debit_account_id = line.salary_rule_id.account_credit.id
+                            credit_account_id =  journal_id_slip.default_debit_account_id.id
 
                             if debit_account_id: # If the rule has a debit account.
                                 debit = amount if amount > 0.0 else 0.0
@@ -283,3 +281,14 @@ class overwrite_hr_payslip_sepa_wizard(models.TransientModel):
         payslip_ids.sepa_journal_id = self.journal_id
         print(payslip_ids.sepa_journal_id.name)
         payslip_ids._create_xml_file(self.journal_id)
+
+class overwrite_payroll_payslip_run(models.Model):
+    _inherit = 'hr.payslip.run'
+    state = fields.Selection(selection_add=[('Descuento contable', 'Descuento contable')])
+
+    def action_desc(self):
+        self.write({'state' : 'Descuento contable'})
+
+    def action_validate_paid(self):
+        self.mapped('slip_ids').filtered(lambda slip: slip.state != 'cancel').action_payslip_paid_account()
+        self.action_desc()
