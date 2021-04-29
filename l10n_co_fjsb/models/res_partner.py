@@ -85,18 +85,22 @@ class AccountChartTemplate(models.Model):
             'company_id': company,
             'account_tax_periodicity': company.account_tax_periodicity,
             'account_tax_periodicity_journal_id': company.account_tax_periodicity_journal_id,
+            'account_tax_periodicity_reminder_day': company.account_tax_periodicity_reminder_day,
             'use_anglo_saxon': company.use_anglo_saxon,
             'totals_below_sections': company.totals_below_sections,
         }
         config_settings = self.env['res.config.settings'].with_context(company=company)
         config_settings._create_edit_tax_reminder(vals)
-        
+
         config_settings.group_analytic_accounting = True
         config_settings.group_analytic_accounting = True
         config_settings.group_analytic_tags = True
         config_settings.module_account_budget = True
         config_settings.module_product_margin = True
+        config_settings.use_anglo_saxon = True
 
-        company.account_tax_original_periodicity_reminder_day = 3
+        config_settings.account_tax_periodicity_reminder_day = 3
+
+        company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
 
         return res
