@@ -103,9 +103,17 @@ class AccountChartTemplate(models.Model):
 
         company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
 
-        # Asinar automáticamente el grupo a las cuentas contales de esa compañía. modelo: account.account
-        #account_group = self.env['account.group'].with_context(company=company)
-        # CAJA GENERAL
+        # Asinar automáticamente el grupo a las cuentas contables de esa compañía con grupo con prefijo de código de 6 dígitos a cuantas contables de 8 dígitos. modelo: account.account
+        account_groups = self.env['account.group'].with_context(company=company)
+        account_accounts = self.env['account.account'].with_context(company=company)
+
+        for group in account_groups:
+            if len(group.code_prefix) = 6:
+                for account in account_groups:
+                    if len(account.code) = 8:
+                        if group.code_prefix in account.code:
+                            account.group_id = group
+
         #account_group.search([('code_prefix', '=', '110505')], limit=1)
 
 
