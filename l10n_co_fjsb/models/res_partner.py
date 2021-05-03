@@ -103,4 +103,12 @@ class AccountChartTemplate(models.Model):
 
         company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
 
+        # Asinar automáticamente el grupo a las cuentas contales de esa compañía. modelo: account.account
+        #account_group = self.env['account.group'].with_context(company=company)
+        # CAJA GENERAL
+        #account_group.search([('code_prefix', '=', '110505')], limit=1)
+
+
+
+
         return res
