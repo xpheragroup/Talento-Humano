@@ -111,13 +111,13 @@ class AccountChartTemplate(models.Model):
         account_accounts = self.env['account.account'].with_context(company=company)
 
         for group in account_groups:
-            _logger.critical("DEBUG: ACCOUNT PACKAGE.")
-            _logger.critical(group.code_prefix)
-            _logger.critical(len(group.code_prefix))
+            _logger.info("DEBUG: ACCOUNT PACKAGE.")
+            _logger.info(group.code_prefix)
+            _logger.info(len(group.code_prefix))
             if len(group.code_prefix) == 6:
                 for account in account_groups:
-                    _logger.critical(account.code)
-                    _logger.critical(len(account.code))
+                    _logger.info(account.code)
+                    _logger.info(len(account.code))
                     if len(account.code) == 8:
                         if group.code_prefix in account.code:
                             account.group_id = group
