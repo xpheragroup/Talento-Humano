@@ -108,6 +108,7 @@ class AccountChartTemplate(models.Model):
         account_accounts = self.env['account.account'].with_context(company=company)
 
         for group in account_groups:
+            print("DEBUG: ACCOUNT PACKAGE.")
             print(group.code_prefix)
             print(len(group.code_prefix))
             if len(group.code_prefix) == 6:
