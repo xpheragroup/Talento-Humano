@@ -1,7 +1,10 @@
 # coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 from odoo import api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -108,13 +111,13 @@ class AccountChartTemplate(models.Model):
         account_accounts = self.env['account.account'].with_context(company=company)
 
         for group in account_groups:
-            print("DEBUG: ACCOUNT PACKAGE.")
-            print(group.code_prefix)
-            print(len(group.code_prefix))
+            _logger.critical("DEBUG: ACCOUNT PACKAGE.")
+            _logger.critical(group.code_prefix)
+            _logger.critical(len(group.code_prefix))
             if len(group.code_prefix) == 6:
                 for account in account_groups:
-                    print(account.code)
-                    print(len(account.code))
+                    _logger.critical(account.code)
+                    _logger.critical(len(account.code))
                     if len(account.code) == 8:
                         if group.code_prefix in account.code:
                             account.group_id = group
