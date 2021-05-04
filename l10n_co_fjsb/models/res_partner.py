@@ -115,7 +115,7 @@ class AccountChartTemplate(models.Model):
             _logger.info(group.code_prefix)
             _logger.info(len(group.code_prefix))
             if len(group.code_prefix) == 6:
-                for account in account_groups:
+                for account in account_accounts:
                     _logger.info(account.code)
                     _logger.info(len(account.code))
                     if len(account.code) == 8:
