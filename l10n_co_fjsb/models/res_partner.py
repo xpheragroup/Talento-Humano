@@ -117,8 +117,9 @@ class AccountChartTemplate(models.Model):
         #    regular accounts created and that liquidity transfer account
         records = super(AccountChartTemplate, self)._load_records(data_list, update)
         # Asinar automáticamente el grupo a las cuentas contables de esa compañía con grupo con prefijo de código de 6 dígitos a cuantas contables de 8 dígitos. modelo: account.account
-        account_groups = self.env['account.group']
-        account_accounts = self.env['account.account']
+        account_groups = self.env['account.group'].search([])
+        account_accounts = self.env['account.account'].search([])
+        
         _logger.info("DEBUG: ACCOUNT PACKAGE GROUPS & ACCOUNTS.")
         _logger.info(account_groups)
         _logger.info(account_accounts)
