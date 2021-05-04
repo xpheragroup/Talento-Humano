@@ -4,8 +4,6 @@
 import logging
 from odoo import api, fields, models
 
-_logger = logging.getLogger(__name__)
-
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
@@ -91,6 +89,7 @@ class AccountChartTemplate(models.Model):
             'account_tax_periodicity_reminder_day': company.account_tax_periodicity_reminder_day,
             'use_anglo_saxon': company.use_anglo_saxon,
             'totals_below_sections': company.totals_below_sections,
+            'group_analytic_tags': True,
         }
         config_settings = self.env['res.config.settings'].with_context(company=company)
         config_settings._create_edit_tax_reminder(vals)
@@ -106,14 +105,10 @@ class AccountChartTemplate(models.Model):
 
         company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
 
-        
+
         # Asinar automáticamente el grupo a las cuentas contables de esa compañía con grupo con prefijo de código de 6 dígitos a cuantas contables de 8 dígitos. modelo: account.account
         account_groups = self.env['account.group'].search([])
         account_accounts = self.env['account.account'].search([])
-
-        _logger.info("DEBUG: ACCOUNT PACKAGE GROUPS & ACCOUNTS.")
-        _logger.info(account_groups)
-        _logger.info(account_accounts)
 
         for group in account_groups:
             if len(group.code_prefix) == 6:
