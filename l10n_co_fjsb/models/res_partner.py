@@ -106,38 +106,23 @@ class AccountChartTemplate(models.Model):
 
         company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
 
-        return res
-
-    @api.model
-    def _load_records(self, data_list, update=False):
-        # When creating a chart template create, for the liquidity transfer account
-        #  - an account.account.template: this allow to define account.reconcile.model.template objects refering that liquidity transfer
-        #    account although it's not existing in any xml file
-        #  - an entry in ir_model_data: this allow to still use the method create_record_with_xmlid() and don't make any difference between
-        #    regular accounts created and that liquidity transfer account
-        records = super(AccountChartTemplate, self)._load_records(data_list, update)
+        
         # Asinar automáticamente el grupo a las cuentas contables de esa compañía con grupo con prefijo de código de 6 dígitos a cuantas contables de 8 dígitos. modelo: account.account
         account_groups = self.env['account.group'].search([])
         account_accounts = self.env['account.account'].search([])
-        
+
         _logger.info("DEBUG: ACCOUNT PACKAGE GROUPS & ACCOUNTS.")
         _logger.info(account_groups)
         _logger.info(account_accounts)
 
         for group in account_groups:
-            _logger.info("DEBUG: ACCOUNT PACKAGE.")
-            _logger.info(group.code_prefix)
-            _logger.info(len(group.code_prefix))
             if len(group.code_prefix) == 6:
                 for account in account_accounts:
-                    _logger.info(account.code)
-                    _logger.info(len(account.code))
                     if len(account.code) == 8:
                         if group.code_prefix in account.code:
                             account.group_id = group
 
-        return records
-        #account_group.search([('code_prefix', '=', '110505')], limit=1)
+        return res
 
 
 
