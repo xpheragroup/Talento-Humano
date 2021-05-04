@@ -107,8 +107,8 @@ class AccountChartTemplate(models.Model):
         company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
 
         # Asinar automáticamente el grupo a las cuentas contables de esa compañía con grupo con prefijo de código de 6 dígitos a cuantas contables de 8 dígitos. modelo: account.account
-        account_groups = self.env['account.group'].with_context(company=company)
-        account_accounts = self.env['account.account'].with_context(company=company)
+        account_groups = self.env['account.group']
+        account_accounts = self.env['account.account']
 
         for group in account_groups:
             _logger.info("DEBUG: ACCOUNT PACKAGE.")
