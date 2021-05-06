@@ -3,7 +3,7 @@
     <record id="my_config_settings" model="res.config.settings">
         <field name="group_analytic_tags" eval="True" />
         <field name="group_analytic_accounting" eval="True" />
-        <field name="default_picking_policy" eval="direct" />
+        <field name="default_picking_policy">direct</field>
 
     </record>
 
