@@ -98,6 +98,7 @@ class AccountChartTemplate(models.Model):
         config_settings.module_account_budget = True
         config_settings.module_product_margin = True
         config_settings.use_anglo_saxon = True
+        config_settings.group_analytic_tags = True
 
         config_settings_all = self.env['res.config.settings'].search([('company_id', '=', company.id)], limit=1)
         config_settings_all.group_analytic_tags = True

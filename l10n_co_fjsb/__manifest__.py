@@ -7,6 +7,8 @@
     'author': 'Xphera.co',
     'website': 'http://xphera.co',
     'depends': [
+        'base',
+        'base_setup',
         'account',
     ],
     'data': [
