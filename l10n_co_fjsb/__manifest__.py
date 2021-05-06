@@ -18,6 +18,7 @@
         'data/account.tax.group.csv',
         'data/account_tax_template.xml',
         'data/account_chart_template_configure_data.xml',
+        'data/res_config_data.xml',
         'views/res_partner.xml',
     ],
 }
