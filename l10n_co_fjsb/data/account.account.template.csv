@@ -578,6 +578,7 @@ co_puc_13551805,13551805,RETEICA en Ventas,TRUE,account.data_account_type_curren
 co_puc_13551810,13551810,RETEICA de Negocios Conjuntos,TRUE,account.data_account_type_current_assets,l10n_co_fjsb_chart_template_generic
 
 
+co_puc_413595,413595,Venta de Otros Productos,FALSE,account.data_account_type_revenue,l10n_co_fjsb_chart_template_generic
 co_puc_421020,421020,Diferencia en Cambio,FALSE,account.data_account_type_revenue,l10n_co_fjsb_chart_template_generic
 co_puc_530525,530525,Diferencia en Cambio,FALSE,account.data_account_type_expenses,l10n_co_fjsb_chart_template_generic
 co_puc_13050701,13050701,Nacionales (PUC Prueba),TRUE,account.data_account_type_receivable,l10n_co_fjsb_chart_template_generic
