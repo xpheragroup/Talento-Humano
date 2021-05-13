@@ -71,8 +71,7 @@
         <field name="sequence">1</field>
         <field name="name">IVA Descontable Compra 16% (2016 y Enero 2017)</field>
         <field name="amount">16</field>
-        <field name="amount_type">perc
-            ent</field>
+        <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
         <field name="chart_template_id" ref="l10n_co_fjsb_chart_template_generic"/>
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
@@ -172,7 +171,7 @@
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
         <field name="chart_template_id" ref="l10n_co_fjsb_chart_template_generic"/>
-        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),31
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'base',
