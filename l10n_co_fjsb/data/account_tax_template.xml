@@ -285,7 +285,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('co_puc_2408051005'),
+                'account_id': ref('co_puc_24081001'),
             }),
         ]"/>
     </record>
@@ -318,7 +318,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('co_puc_2408051010'),
+                'account_id': ref('co_puc_24081002'),
             }),
         ]"/>
     </record>
