@@ -113,9 +113,17 @@ class AccountChartTemplate(models.Model):
         account_accounts = self.env['account.account'].search([])
 
         for group in account_groups:
-            if len(group.code_prefix) == 6:
-                for account in account_accounts:
+            for account in account_accounts:
+                if len(group.code_prefix) == 4:
+                    if len(account.code) == 6:
+                        if group.code_prefix in account.code:
+                            account.group_id = group
+                if len(group.code_prefix) == 6:
                     if len(account.code) == 8:
+                        if group.code_prefix in account.code:
+                            account.group_id = group
+                if len(group.code_prefix) == 8:
+                    if len(account.code) == 10:
                         if group.code_prefix in account.code:
                             account.group_id = group
 
