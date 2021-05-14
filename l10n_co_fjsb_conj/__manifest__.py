@@ -1,7 +1,7 @@
 
 {
     'name': 'Contabilidad (FJSB) Negocios Conjuntos',
-    'version': '0.91',
+    'version': '0.9',
     'category': 'Localization',
     'description': 'Preconfiguración Contabilidad (FJSB) Negocios Conjuntos',
     'author': 'Xphera.co',

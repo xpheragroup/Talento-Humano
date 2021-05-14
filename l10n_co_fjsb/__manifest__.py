@@ -1,7 +1,7 @@
 
 {
     'name': 'Contabilidad (FJSB)',
-    'version': '0.91',
+    'version': '0.9',
     'category': 'Localization',
     'description': 'Preconfiguración Contabilidad (FJSB)',
     'author': 'Xphera.co',
