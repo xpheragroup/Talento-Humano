@@ -3,7 +3,7 @@
     <menuitem id="account_reports_co_statements_menu" name="Colombia" parent="account.menu_finance_reports" sequence="0" groups="account.group_account_user"/>
     
         <!-- Chart Template -->
-        <record id="l10n_co_fjsb_chart_template_generic" model="account.chart.template">
+        <record id="l10n_co_fjsb_conj_chart_template_generic" model="account.chart.template">
             <field name="property_account_receivable_id" ref="co_puc_13050505"/>
             <field name="property_account_payable_id" ref="co_puc_22050501"/>
             <field name="property_account_expense_categ_id" ref="co_puc_61359501"/>

@@ -12,7 +12,7 @@
         'account',
     ],
     'data': [
-        'data/l10n_co_fjsb_chart_data.xml',
+        'data/l10n_co_fjsb_conj_chart_data.xml',
         'data/account.account.template.csv',
         'data/account_chart_template_data.xml',
         'data/account.tax.group.csv',
