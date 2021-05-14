@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <field name="vat" position="before">
-                <field name="l10n_co_fjsb_conj_document_type"/>
+                <field name="l10n_co_fjsb_document_type"/>
             </field>
             <field name="vat" position="after">
                 <field name="l10n_co_fjsb_conj_verification_code" invisible="1"/>

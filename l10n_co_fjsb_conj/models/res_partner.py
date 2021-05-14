@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    l10n_co_fjsb_conj_document_type = fields.Selection([('rut', 'NIT'),
+    l10n_co_fjsb_document_type = fields.Selection([('rut', 'NIT'),
                                               ('id_document', 'Cédula'),
                                               ('id_card', 'Tarjeta de Identidad'),
                                               ('passport', 'Pasaporte'),
@@ -49,7 +49,7 @@ class ResPartner(models.Model):
             else:
                 partner.l10n_co_fjsb_conj_verification_code = False
 
-    @api.constrains('vat', 'country_id', 'l10n_co_fjsb_conj_document_type')
+    @api.constrains('vat', 'country_id', 'l10n_co_fjsb_document_type')
     def check_vat(self):
         # check_vat is implemented by base_vat which this localization
         # doesn't directly depend on. It is however automatically
@@ -57,7 +57,7 @@ class ResPartner(models.Model):
         if self.sudo().env.ref('base.module_base_vat').state == 'installed':
             # don't check Colombian partners unless they have RUT (= Colombian VAT) set as document type
             self = self.filtered(lambda partner: partner.country_id != self.env.ref('base.co') or\
-                                                 partner.l10n_co_fjsb_conj_document_type == 'rut')
+                                                 partner.l10n_co_fjsb_document_type == 'rut')
             return super(ResPartner, self).check_vat()
         else:
             return True
