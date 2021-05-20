@@ -19,5 +19,6 @@
         'data/account_tax_template.xml',
         'data/account_chart_template_configure_data.xml',
         'views/res_partner.xml',
+        'data/account_journal_cash_rule.xml',
     ],
 }
