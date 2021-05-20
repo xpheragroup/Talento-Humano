@@ -83,6 +83,30 @@ class AccountChartTemplate(models.Model):
         journal_to_add = [{'name': _('Valoración de Inventarios'), 'type': 'general', 'code': 'STJ', 'favorite': False, 'sequence': 8}]
         return super(AccountChartTemplate, self).generate_journals(acc_template_ref=acc_template_ref, company=company, journals_dict=journal_to_add)
 
+
+    def _create_bank_journals(self, company, acc_template_ref):
+        '''
+        This function creates bank journals and their account for each line
+        data returned by the function _get_default_bank_journals_data.
+
+        :param company: the company for which the wizard is running.
+        :param acc_template_ref: the dictionary containing the mapping between the ids of account templates and the ids
+            of the accounts that have been generated from them.
+        '''
+        self.ensure_one()
+        bank_journals = self.env['account.journal']
+        # Create the journals that will trigger the account.account creation
+        for acc in self._get_default_bank_journals_data():
+            bank_journals += self.env['account.journal'].create({
+                'id': acc['acc_name'] + '_01',
+                'name': acc['acc_name'],
+                'type': acc['account_type'],
+                'company_id': company.id,
+x                'sequence': 10
+            })
+
+        return bank_journals
+
     def _get_default_bank_journals_data(self):
         """ Returns the data needed to create the default bank journals when
         installing this chart of accounts, in the form of a list of dictionaries.
