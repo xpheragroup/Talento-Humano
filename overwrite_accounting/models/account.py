@@ -62,8 +62,8 @@ class AccountJournal(models.Model):
                 account_vals = self._prepare_liquidity_account(vals.get('name'), company, vals.get('currency_id'), vals.get('type'))
 
                 if vals.get('name') == "Efectivo":
-                    codigo_puc = 'co_puc_11050505'
-                    default_account = self.env['account.account'].search([('id', '=', codigo_puc)])
+                    codigo_puc = '11050505'
+                    default_account = self.env['account.account'].search([('code', '=', codigo_puc)])
                     vals['default_debit_account_id'] = default_account.id
                     vals['default_credit_account_id'] = default_account.id
                 else:
