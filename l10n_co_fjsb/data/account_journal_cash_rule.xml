@@ -4,8 +4,6 @@
 		<record model="account.journal" id="Efectivo_01">
 			<field name="name">Efectivo</field>
 			<field name="type">cash</field>
-			<field name="default_credit_account_id" ref="co_puc_11050505"/>
-			<field name="default_debit_account_id" ref="co_puc_11050505"/>
 		</record>
 	</data>
 </odoo>

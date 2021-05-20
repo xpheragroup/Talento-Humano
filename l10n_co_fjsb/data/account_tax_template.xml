@@ -1378,8 +1378,7 @@
         <field name="name">RteFte Arendamiento de Bienes Raices 2.5%</field>
         <field name="amount">-2.5</field>
         <field name="amount_type">percent</field>
-        <field name="type_tax_use">purchase</field>
-        <field name="active">False</field>        
+        <field name="type_tax_use">purchase</field> 
         <field name="chart_template_id" ref="l10n_co_fjsb_chart_template_generic"/>
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
             (0,0, {
@@ -1390,6 +1389,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
+                'account_id': ref('co_puc_23653002'),
             }),
         ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1401,6 +1401,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
+                'account_id': ref('co_puc_23653002'),
             }),
         ]"/>
     </record>
@@ -1802,7 +1803,7 @@
     <record id="l10n_co_fjsb_tax_44_1" model="account.tax.template">
         <field name="sequence">1</field>
         <field name="name">RteICA 0.7</field>
-        <field name="amount">-0.7</field>
+        <field name="amount">-0.07</field>
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
         <field name="chart_template_id" ref="l10n_co_fjsb_chart_template_generic"/>
