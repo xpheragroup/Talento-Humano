@@ -102,7 +102,7 @@ class AccountChartTemplate(models.Model):
                 'name': acc['acc_name'],
                 'type': acc['account_type'],
                 'company_id': company.id,
-x                'sequence': 10
+                'sequence': 10
             })
 
         return bank_journals
