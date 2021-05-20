@@ -40,8 +40,6 @@ class AccountJournal(models.Model):
                 'company_id': company.id,
         }  # Short code is needed larger (size was 5, set 10)
 
-
-
 class AccountAccount(models.Model):
     _inherit = "account.account"
 
