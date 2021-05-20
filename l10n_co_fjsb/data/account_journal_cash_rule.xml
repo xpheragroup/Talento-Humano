@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
-		 <record id="Efectivo_01" model="account.journal">
+    <data noupdate="1">
+		 <record id="Efectivo_001" model="account.journal">
             <field name="name">Efectivo</field>
             <field name="code">CSH</field>
             <field name="type">cash</field>
