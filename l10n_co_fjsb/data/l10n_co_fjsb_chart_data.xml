@@ -6,7 +6,7 @@
         <field name="name">Contabilidad (FJSB)</field>
         <field name="currency_id" ref="base.COP"/>
         <field name="bank_account_code_prefix">11100505</field>
-        <field name="cash_account_code_prefix">11200505</field>
+        <field name="cash_account_code_prefix">110505</field>
         <field name="transfer_account_code_prefix">1115</field>
     </record>
 
