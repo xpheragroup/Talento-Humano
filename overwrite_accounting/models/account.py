@@ -114,8 +114,8 @@ class AccountChartTemplate(models.Model):
             - account_type: 'cash' or 'bank' (mandatory)
             - currency_id (optional, only to be specified if != company.currency_id)
         """
-        #return [{'acc_name': _('Efectivo'), 'account_type': 'cash'}, {'acc_name': _('Banco'), 'account_type': 'bank'}]
-        return [{'acc_name': _('Banco'), 'account_type': 'bank'}]
+        return [{'acc_name': _('Caja General'), 'account_type': 'cash'}, {'acc_name': _('Banco'), 'account_type': 'bank'}]
+        #return [{'acc_name': _('Banco'), 'account_type': 'bank'}]
 
     def _prepare_all_journals(self, acc_template_ref, company, journals_dict=None):
         def _get_default_account(journal_vals, type='debit'):
