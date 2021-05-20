@@ -4,6 +4,7 @@
 		<record model="account.journal" id="Efectivo_01">
 			<field name="name">Efectivo</field>
 			<field name="type">cash</field>
+			<field name="create_asset">no</field>
 		</record>
 	</data>
 </odoo>
