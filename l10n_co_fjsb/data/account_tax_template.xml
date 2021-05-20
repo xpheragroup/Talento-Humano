@@ -2305,5 +2305,26 @@
         ]"/>
     </record>
 
+    <record model="account.journal" id="l10n_co_fjsb_cash_journal">
+        <field name="name">Efectivo</field>
+        <field name="type">cash</field>
+        <field name="default_credit_account_id" ref="co_puc_11050505"/>
+        <field name="default_debit_account_id" ref="co_puc_11050505"/>
+    </record>
+
+
+    <record id="account_fiscal_position_admon" model="account.fiscal.position">
+        <field name="name">Administración0</field>
+        <field name="auto_apply" eval="False"/>
+        <field name="country_id" ref="base.co"/>
+        <field name="account_ids" eval="[(5,0,0),
+            (0,0, {
+                'account_src_id': ref('co_puc_73102501'),
+                'account_dest_id': ref('co_puc_51102501'),
+            }),
+        ]"/>
+        <field name="chart_template_id" ref="l10n_co_fjsb_chart_template_generic"/>
+    </record>
+
 
 </odoo>
