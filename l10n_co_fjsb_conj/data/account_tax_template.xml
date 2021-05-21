@@ -1346,7 +1346,8 @@
         <field name="name">RteFte Arrendamiento de Bienes Raices 2.5%</field>
         <field name="amount">-2.5</field>
         <field name="amount_type">percent</field>
-        <field name="type_tax_use">purchase</field>      
+        <field name="type_tax_use">purchase</field>
+        <field name="active">True</field>
         <field name="chart_template_id" ref="l10n_co_fjsb_conj_chart_template_generic"/>
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
             (0,0, {
