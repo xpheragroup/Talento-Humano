@@ -6,9 +6,6 @@
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="action_copy_ldm" class="oe_highlight" string="Copiar LdM" type="object" confirm="Esta acción es irreversible y copiará las listas de materiales de la Compañía copia LdM seleccionada. ¿Desea continuar?"/>
-
-                    <field name="state" widget="statusbar" statusbar_visible="no_copy,copied"/>
                 </xpath>
                 
                 <xpath expr="//field[@name='parent_id']" position="after">
