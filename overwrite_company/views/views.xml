@@ -18,15 +18,16 @@
                     <page string="Copia de LdM">
                         <group>
                             <group class="invoice-residual-view">
-                                <field name="empresa_copy_ldm" string="Compañía copia LdM"/>
-                                <field name="copy_ldm" string="Listas de materiales asociadas a Compañía copia LdM" widget="many2many"/>
-                                <field name="copy_ldm" widget="many2many">
-                                    <tree string="LdM" editable="top">
-                                        <field name="company_id" invisible="1"/>
-                                        <field width="300px"  name="product_tmpl_id" string="Nombre LdM"/>
-                                    </tree>
-                                </field>
+                                <field name="empresa_copy_ldm" string="Compañía copia LdM" />
                             </group>
+                        </group>
+                        <group>
+                            <field name="copy_ldm" widget="many2many" attrs="{'readonly':[('empresa_copy_ldm', '=', False)]}">
+                                <tree string="LdM" editable="top">
+                                    <field name="company_id" invisible="1"/>
+                                    <field width="300px"  name="product_tmpl_id" string="Nombre LdM"/>
+                                </tree>
+                            </field>
                         </group>
                     </page>
                 </xpath>

@@ -20,7 +20,9 @@ class Company(models.Model):
     _name = "res.company"
     _inherit = "res.company"
 
-    empresa_copy_ldm = fields.Many2one('res.company', string='Compañía copia LdM', index=True)
+    empresa_copy_ldm = fields.Many2one('res.company', string='Compañía copia LdM', index=True,
+                    readonly=True, states={'no_copy': [('readonly', False)]},)
+
     copy_ldm = fields.Many2many(string="Listas de materiales asociadas a Compañía copia LdM",
                     comodel_name='mrp.bom',
                     relation="bom_company_copy",
@@ -44,11 +46,10 @@ class Company(models.Model):
         return True
 
 
-    # @api.onchange('empresa_copy_ldm')
-    # def _onchange_empresa_copy_ldm(self):
-    #     for record in self:
-    #         if record.product_qty > 0:
-    #             record.cantidad_final = record.product_qty
-    #         else:
-    #             raise exceptions.UserError(
-    #                 "La Cantidad Inicial ingresada no puede ser 0 o menor. Elimine el registro si no lo requiere.")
+    @api.onchange('empresa_copy_ldm')
+    def _onchange_empresa_copy_ldm(self):
+        self.copy_ldm = None
+
+        if self.empresa_copy_ldm:
+            bom_ids = self.env['mrp.bom'].search([('company_id', '=', self.empresa_copy_ldm.id)])
+            copy_ldm = bom_ids
