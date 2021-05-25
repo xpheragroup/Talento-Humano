@@ -22,8 +22,8 @@
                             </group>
                         </group>
                         <group>
-                            <field name="copy_ldm" widget="many2many" attrs="{'readonly':[('empresa_copy_ldm', '=', False)]}">
-                                <tree string="LdM" editable="top">
+                            <field name="copy_ldm" widget="many2many" attrs="{'readonly':['|', ('empresa_copy_ldm', '=', False), ('state','!=','no_copy')]}">
+                                <tree string="LdM">
                                     <field name="company_id" invisible="1"/>
                                     <field width="300px"  name="product_tmpl_id" string="Nombre LdM"/>
                                 </tree>
