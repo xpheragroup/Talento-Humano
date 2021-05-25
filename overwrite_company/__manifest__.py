@@ -13,7 +13,7 @@
     'website': "http://xphera.co",
     'category': 'Company',
     'version': '0.1',
-    'depends': ['base'. 'mrp'],
+    'depends': ['base', 'mrp'],
     'data': [
         'views/views.xml',
     ],
