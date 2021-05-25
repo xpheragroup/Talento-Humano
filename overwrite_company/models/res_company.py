@@ -25,7 +25,7 @@ class Company(models.Model):
                     comodel_name='mrp.bom',
                     relation="bom_company_copy",
                     help="Selección de Listas de materiales asociadas a Compañía copia LdM.",
-                    #domain="[('product_tmpl_id','=',sede_seleccionada)]",
+                    domain="[('company_id','=',empresa_copy_ldm)]",
                     #required=True,
                     readonly=True, states={'no_copy': [('readonly', False)]},)
 
@@ -42,3 +42,13 @@ class Company(models.Model):
         self.state = 'copied'
         _logger.critical("LdM Copiada.")
         return True
+
+
+    # @api.onchange('empresa_copy_ldm')
+    # def _onchange_empresa_copy_ldm(self):
+    #     for record in self:
+    #         if record.product_qty > 0:
+    #             record.cantidad_final = record.product_qty
+    #         else:
+    #             raise exceptions.UserError(
+    #                 "La Cantidad Inicial ingresada no puede ser 0 o menor. Elimine el registro si no lo requiere.")

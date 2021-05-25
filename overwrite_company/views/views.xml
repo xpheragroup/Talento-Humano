@@ -17,6 +17,15 @@
                 <xpath expr="//field[@name='parent_id']" position="after">
                     <field name="empresa_copy_ldm" string="Compañía copia LdM"/>
                     <field name="copy_ldm" string="Listas de materiales asociadas a Compañía copia LdM" widget="many2many"/>
+
+                    <group class="invoice-residual-view">
+                        <field name="copy_ldm" widget="many2many">
+                            <tree string="LdM" editable="top">
+                                <field name="company_id" invisible="1"/>
+                                <field width="300px"  name="product_tmpl_id" string="Área"/>
+                            </tree>
+                        </field>
+                    </group>
                 </xpath>
             </field>
         </record>
