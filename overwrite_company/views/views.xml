@@ -5,9 +5,12 @@
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//header" position="inside">
+
+                <xpath expr="//form" position="inside">
+                    <header>
+                    </header>
                 </xpath>
-                
+
                 <xpath expr="//field[@name='parent_id']" position="after">
                     <field name="empresa_copy_ldm" string="Compañía copia LdM"/>
                     <field name="copy_ldm" string="Listas de materiales asociadas a Compañía copia LdM" widget="many2many"/>
