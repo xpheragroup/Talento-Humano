@@ -28,3 +28,17 @@ class Company(models.Model):
                     #domain="[('product_tmpl_id','=',sede_seleccionada)]",
                     #required=True,
                     readonly=True, states={'no_copy': [('readonly', False)]},)
+
+    # Sistema de Estados
+    state = fields.Selection([
+        ('no_copy', 'LdM No copiada.'),
+        ('copied', 'Ldm Copiada.')], string='Estado',
+        copy=False, index=True, readonly=True,
+        store=True, tracking=True, default='no_copy',
+        help=" * LdM No copiada: La lista de materiales no se ha copiado.\n"
+             " * LdM Copiada: La lista de materiales se ha copiado de la Compañía copia LdM seleccionada.")
+
+    def action_copy_ldm(self):
+        self.state = 'copied'
+        _logger.critical("LdM Copiada.")
+        return True
