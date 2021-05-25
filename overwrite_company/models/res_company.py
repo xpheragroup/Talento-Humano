@@ -51,5 +51,6 @@ class Company(models.Model):
         self.copy_ldm = None
 
         if self.empresa_copy_ldm:
-            bom_ids = self.env['mrp.bom'].search([('company_id', '=', self.empresa_copy_ldm.id)])
-            copy_ldm = bom_ids
+            self.copy_ldm = self.env['mrp.bom'].search([('company_id', '=', self.empresa_copy_ldm.id)])
+            _logger.critical("self.copy_ldm")
+            _logger.critical(self.copy_ldm)
