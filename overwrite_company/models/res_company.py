@@ -43,6 +43,20 @@ class Company(models.Model):
     def action_copy_ldm(self):
         self.state = 'copied'
         _logger.critical("LdM Copiada.")
+
+        if self.copy_ldm:
+            for ldm in self.copy_ldm:
+                new_copy_ldm = ldm.copy({
+                            'company_id': self.company_id,
+                            'picking_type_id': self.warehouse_1.manu_type_id.id,
+                            'cost_center': None,
+                            'bom_line_ids': [(6, 0, [p.id for p in ldm.bom_line_ids])],
+                        })
+        else:
+            raise UserError(_("No se encuentra ninguna lista de materiales asociada a la companía seleccionada."))
+
+
+
         return True
 
 

@@ -8,7 +8,7 @@
 
                 <xpath expr="//sheet" position="before">
                     <header>
-                        <button name="action_copy_ldm" class="oe_highlight" string="Copiar LdM" type="object" confirm="Esta acción es irreversible y copiará las listas de materiales de la Compañía copia LdM seleccionada. ¿Desea continuar?"/>
+                        <button name="action_copy_ldm" class="oe_highlight" string="Copiar LdM" type="object" confirm="Esta acción es irreversible y copiará las listas de materiales de la Compañía copia LdM seleccionada. ¿Desea continuar?" attrs="{'invisible':[('state','!=','no_copy')]}"/>
 
                         <field name="state" widget="statusbar" statusbar_visible="no_copy,copied"/>
                     </header>
