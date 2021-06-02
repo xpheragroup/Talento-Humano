@@ -52,6 +52,7 @@ class Company(models.Model):
                             'cost_center': None,
                             'bom_line_ids': [(6, 0, [p.id for p in ldm.bom_line_ids])],
                         })
+                
         else:
             raise UserError(_("No se encuentra ninguna lista de materiales asociada a la companía seleccionada."))
 
